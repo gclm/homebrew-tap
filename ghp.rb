@@ -5,12 +5,12 @@
 class Ghp < Formula
   desc "Github Proxy | Github 代理"
   homepage "https://blog.gclmit.club"
-  version "1.0.3-rc4"
+  version "1.0.3"
 
   on_macos do
-    if Hardware::CPU.intel?
-      url "https://github.com/gclm/ghp/releases/download/v1.0.3-rc4/ghp_1.0.3-rc4_darwin_amd64.tar.gz"
-      sha256 "acc5f4893f4597f5e02caab07763f758673639187c4c7b2b7990f0937756707f"
+    if Hardware::CPU.arm?
+      url "https://github.com/gclm/ghp/releases/download/v1.0.3/ghp_1.0.3_darwin_arm64.tar.gz"
+      sha256 "41250fc932fb98c5f8f14def44665af8d5bdbaa84ecc71c6f6056880664c4bd8"
 
       def install
         bin.install "ghp"
@@ -22,9 +22,9 @@ class Ghp < Formula
         (zsh_completion/"_ghp").write output
       end
     end
-    if Hardware::CPU.arm?
-      url "https://github.com/gclm/ghp/releases/download/v1.0.3-rc4/ghp_1.0.3-rc4_darwin_arm64.tar.gz"
-      sha256 "31f46b86e6d6bfa83acc3f9f50c4f2f669dec8b136cf5eb7300149754e7d737e"
+    if Hardware::CPU.intel?
+      url "https://github.com/gclm/ghp/releases/download/v1.0.3/ghp_1.0.3_darwin_amd64.tar.gz"
+      sha256 "759754460d0259720928b795f769b3f189473aea7c57622820600b3026a20eaa"
 
       def install
         bin.install "ghp"
@@ -40,8 +40,8 @@ class Ghp < Formula
 
   on_linux do
     if Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
-      url "https://github.com/gclm/ghp/releases/download/v1.0.3-rc4/ghp_1.0.3-rc4_linux_arm64.tar.gz"
-      sha256 "a789d916f9ed1971ba6b49d3d0cea056aae151b2a82e5254ef119fbd48c50511"
+      url "https://github.com/gclm/ghp/releases/download/v1.0.3/ghp_1.0.3_linux_arm64.tar.gz"
+      sha256 "79b699e507936467a97c78d5c721aea0425ddeb0a41d4407a3449d8d48b0e6a5"
 
       def install
         bin.install "ghp"
@@ -54,8 +54,8 @@ class Ghp < Formula
       end
     end
     if Hardware::CPU.intel?
-      url "https://github.com/gclm/ghp/releases/download/v1.0.3-rc4/ghp_1.0.3-rc4_linux_amd64.tar.gz"
-      sha256 "f6e9f4ed0340434decd6b5e94395178868b325818a45100fe136e147535cb349"
+      url "https://github.com/gclm/ghp/releases/download/v1.0.3/ghp_1.0.3_linux_amd64.tar.gz"
+      sha256 "fc85a7de54572fbbd8b94e94d8f366bf7cc5079b574dc64b522691abc8fb1436"
 
       def install
         bin.install "ghp"
