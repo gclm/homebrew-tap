@@ -10,12 +10,12 @@ permissions:
 
 jobs:
   update:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
       - uses: Homebrew/actions/setup-homebrew@master
       - name: Install tools
-        run: sudo apt-get update && sudo apt-get install -y jq
+        run: brew list jq >/dev/null 2>&1 || brew install jq
       - name: Refresh formula
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
