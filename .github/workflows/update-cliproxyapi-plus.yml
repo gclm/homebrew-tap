@@ -1,0 +1,35 @@
+name: Update CLIProxyAPIPlus Formula
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "23 */6 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-homebrew@master
+      - name: Install tools
+        run: sudo apt-get update && sudo apt-get install -y jq
+      - name: Refresh formula
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash ./scripts/update-cliproxyapi-plus.sh
+      - name: Brew audit
+        run: brew audit --strict Formula/cliproxyapi-plus.rb
+      - name: Commit changes
+        run: |
+          if git diff --quiet; then
+            echo "No changes"
+            exit 0
+          fi
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add Formula/cliproxyapi-plus.rb
+          git commit -m "chore: update cliproxyapi-plus formula"
+          git push
