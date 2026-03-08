@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 class CliproxyapiPlus < Formula
-  desc "CLIProxyAPI Plus distribution for Homebrew"
+  desc "OpenAI-compatible proxy with third-party provider support"
   homepage "https://github.com/router-for-me/CLIProxyAPIPlus"
   version "6.8.48-0"
   license "MIT"
