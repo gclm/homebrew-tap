@@ -21,7 +21,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: bash ./scripts/update-cliproxyapi-plus.sh
       - name: Brew audit
-        run: brew audit --strict Formula/cliproxyapi-plus.rb
+        run: brew audit --strict gclm/tap/cliproxyapi-plus
       - name: Commit changes
         run: |
           if git diff --quiet; then
