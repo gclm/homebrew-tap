@@ -42,7 +42,7 @@ class CliproxyapiPlus < Formula
     config_dir = etc/"cliproxyapi-plus"
     config_dir.mkpath
     config_path = config_dir/"config.yaml"
-    config_path.write(buildpath/"config.example.yaml".read) unless config_path.exist?
+    config_path.write(File.read(buildpath/"config.example.yaml")) unless config_path.exist?
 
     (var/"lib/cliproxyapi-plus").mkpath
     (var/"log/cliproxyapi-plus").mkpath
