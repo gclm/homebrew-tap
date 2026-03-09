@@ -21,7 +21,9 @@ class CliProxyApiPlus < Formula
 
   def install
     bin.install "cli-proxy-api-plus"
+  end
 
+  def post_install
     config_dir = etc/"cliproxyapi-plus"
     config_dir.mkpath
     config_path = config_dir/"config.yaml"
