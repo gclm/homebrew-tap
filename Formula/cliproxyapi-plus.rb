@@ -128,12 +128,12 @@ class CliproxyapiPlus < Formula
               line
             elsif inside && line =~ /^(\s*secret-key:)/
               replaced = true
-              "#{$1} \047#{token}\047\n"
+              "\#{$1} \047\#{token}\047\n"
             else
               line
             end
           end
-          abort("secret-key not found in #{path}") unless replaced
+          abort("secret-key not found in \#{path}") unless replaced
           File.write(path, lines.join)
         ' "$CONFIG_PATH" "$1"
       }
