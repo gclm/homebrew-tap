@@ -35,7 +35,7 @@ class CliProxyApiPlus < Formula
     (var/"log/cliproxyapi-plus").mkpath
 
     unless config_path.exist?
-      token = SecureRandom.hex(16)
+      token = existing_management_token(info_path) || SecureRandom.hex(16)
       rendered = minimal_config_template.gsub("__MANAGEMENT_TOKEN__", token)
       config_path.write(rendered)
       info_path.write(install_info(port: configured_port_from(rendered), token: token))
@@ -113,6 +113,17 @@ class CliProxyApiPlus < Formula
 
   def read_install_info
     info_path = var/"lib/cliproxyapi-plus/install-info"
+    parse_install_info(info_path)
+  end
+
+  def existing_management_token(info_path)
+    token = parse_install_info(info_path)["management_token"]
+    return nil if token.to_s.empty?
+
+    token
+  end
+
+  def parse_install_info(info_path)
     return {} unless info_path.exist?
 
     info_path.each_line.with_object({}) do |line, acc|
