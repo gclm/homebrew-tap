@@ -94,9 +94,9 @@ class CliproxyapiPlus < Formula
           /^remote-management:[[:space:]]*$/ { in_rm=1; next }
           in_rm && /^[^[:space:]]/ { in_rm=0 }
           in_rm && /^[[:space:]]*secret-key:/ {
-            sub(/^[[:space:]]*secret-key:[[:space:]]*/, "", /Users/gclm/Codes/app/homebrew-tap/scripts/update-cliproxyapi-plus.sh)
-            gsub(/^["\047]|["\047]$/, "", /Users/gclm/Codes/app/homebrew-tap/scripts/update-cliproxyapi-plus.sh)
-            print /Users/gclm/Codes/app/homebrew-tap/scripts/update-cliproxyapi-plus.sh
+            sub(/^[[:space:]]*secret-key:[[:space:]]*/, "", $0)
+            gsub(/^["\047]|["\047]$/, "", $0)
+            print $0
             exit
           }
         ' "$CONFIG_PATH"
@@ -123,9 +123,9 @@ class CliproxyapiPlus < Formula
       read_port() {
         awk '
           /^port:[[:space:]]*[0-9]+[[:space:]]*$/ {
-            sub(/^port:[[:space:]]*/, "", /Users/gclm/Codes/app/homebrew-tap/scripts/update-cliproxyapi-plus.sh)
-            sub(/[[:space:]]*$/, "", /Users/gclm/Codes/app/homebrew-tap/scripts/update-cliproxyapi-plus.sh)
-            print /Users/gclm/Codes/app/homebrew-tap/scripts/update-cliproxyapi-plus.sh
+            sub(/^port:[[:space:]]*/, "", $0)
+            sub(/[[:space:]]*$/, "", $0)
+            print $0
             found=1
             exit
           }
