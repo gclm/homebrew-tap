@@ -1,32 +1,64 @@
-# homebrew-tap
+# gclm/homebrew-tap
 
-Homebrew tap for packages maintained by gclm.
+Personal Homebrew tap for packages maintained or curated by `gclm`.
 
-## Install
+This repository is intended to host multiple custom formulae over time.
+Formulae should live under `Formula/`.
+
+## Tap Usage
 
 ```bash
 brew tap gclm/tap
+```
+
+Install a formula from this tap:
+
+```bash
+brew install gclm/tap/<formula>
+```
+
+## Included Formulae
+
+### `cliproxyapi-plus`
+
+Installs `CLIProxyAPIPlus` with a local-first default configuration for management on:
+
+- `http://127.0.0.1:8917/management.html`
+
+Install:
+
+```bash
 brew install gclm/tap/cliproxyapi-plus
 ```
 
-## Run as a service
+Start as a background service:
 
 ```bash
 brew services start gclm/tap/cliproxyapi-plus
 ```
 
-Default config path:
+Generated files after install:
 
-```text
-$(brew --prefix)/etc/cliproxyapi-plus/config.yaml
-```
+- Config: `$(brew --prefix)/etc/cliproxyapi-plus/config.yaml`
+- Install metadata: `$(brew --prefix)/var/lib/cliproxyapi-plus/install-info`
 
-The formula seeds that file from upstream `config.example.yaml` on first install and preserves local edits on upgrade.
+The formula generates a management token on first install and shows it in `brew` caveats.
 
-## Update policy
+## Maintenance
 
-`CLIProxyAPIPlus` is tracked from upstream GitHub releases. The GitHub Actions workflow in `.github/workflows/update-cliproxyapi-plus.yml` refreshes the formula every 6 hours and pushes a commit when the version or checksums change.
+This tap tracks upstream releases where needed, but keeps formula-specific bootstrap logic local to this repository.
 
-## Existing formulas
+For `cliproxyapi-plus`:
 
-This tap already contains `ghp.rb` at repository root for compatibility. New formulas should go under `Formula/`.
+- upstream binary version and checksums come from `router-for-me/CLIProxyAPIPlus` releases
+- local config bootstrap, caveats, and service behavior are maintained in this repository
+
+## Automation
+
+`.github/workflows/update-cliproxyapi-plus.yml` checks for upstream updates and only commits when the formula file actually changes.
+
+## Conventions
+
+- Put reusable formula logic in the formula itself unless it becomes shared across multiple packages
+- Keep automation scripts minimal and targeted
+- Avoid regenerating whole formula files when only a few upstream fields change

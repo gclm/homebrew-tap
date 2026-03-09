@@ -59,11 +59,14 @@ class CliproxyapiPlus < Formula
     output << "Auth directory: ~/.cli-proxy-api"
     output << "Management URL: #{management_url}"
 
-    if info["management_token"] && !info["management_token"].empty?
-      output << "Management token: #{info["management_token"]}"
-    else
-      output << "Management token: preserved from existing config (not re-generated)"
-    end
+    management_token = info["management_token"]
+    token_message =
+      if management_token.present?
+        "Management token: #{management_token}"
+      else
+        "Management token: preserved from existing config (not re-generated)"
+      end
+    output << token_message
 
     output << ""
     output << "Start the service:"
