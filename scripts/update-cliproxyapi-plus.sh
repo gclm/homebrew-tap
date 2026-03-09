@@ -109,65 +109,48 @@ class CliproxyapiPlus < Formula
       mkdir -p "\$STATE_DIR"
 
       read_secret_key() {
-        ruby -e '
-          path = ARGV[0]
-          inside = false
-          value = ""
-          File.readlines(path).each do |line|
-            if line =~ /^remote-management:\\s*$/
-              inside = true
-              next
-            end
-            if inside && line =~ /^\\S/
-              inside = false
-            end
-            next unless inside
-            if line =~ /^\\s*secret-key:\\s*(.*)$/
-              raw = Regexp.last_match(1).strip
-              value = raw.gsub(/\\A["\\047]|["\\047]\\z/, "")
-              break
-            end
-          end
-          puts value
+        awk '
+          /^remote-management:[[:space:]]*$/ { in_rm=1; next }
+          in_rm && /^[^[:space:]]/ { in_rm=0 }
+          in_rm && /^[[:space:]]*secret-key:/ {
+            sub(/^[[:space:]]*secret-key:[[:space:]]*/, "", \$0)
+            gsub(/^["\047]|["\047]$/, "", \$0)
+            print \$0
+            exit
+          }
         ' "\$CONFIG_PATH"
       }
 
       write_secret_key() {
-        ruby -e '
-          path = ARGV[0]
-          token = ARGV[1]
-          inside = false
-          replaced = false
-          lines = File.readlines(path).map do |line|
-            if line =~ /^remote-management:\\s*$/
-              inside = true
-              line
-            elsif inside && line =~ /^\\S/
-              inside = false
-              line
-            elsif inside && line =~ /^(\\s*secret-key:)/
-              replaced = true
-              "\#{\$1} \047\#{token}\047\\n"
-            else
-              line
-            end
-          end
-          abort("secret-key not found in \#{path}") unless replaced
-          File.write(path, lines.join)
-        ' "\$CONFIG_PATH" "\$1"
+        awk -v token="\$1" '
+          BEGIN { replaced=0 }
+          /^remote-management:[[:space:]]*$/ { in_rm=1; print; next }
+          in_rm && /^[^[:space:]]/ { in_rm=0 }
+          in_rm && /^[[:space:]]*secret-key:/ {
+            print "  secret-key: \047" token "\047"
+            replaced=1
+            next
+          }
+          { print }
+          END {
+            if (!replaced) exit 42
+          }
+        ' "\$CONFIG_PATH" > "\$CONFIG_PATH.tmp"
+        mv "\$CONFIG_PATH.tmp" "\$CONFIG_PATH"
       }
 
       read_port() {
-        ruby -e '
-          path = ARGV[0]
-          port = "8917"
-          File.readlines(path).each do |line|
-            if line =~ /^port:\\s*([0-9]+)\\s*$/
-              port = Regexp.last_match(1)
-              break
-            end
-          end
-          puts port
+        awk '
+          /^port:[[:space:]]*[0-9]+[[:space:]]*$/ {
+            sub(/^port:[[:space:]]*/, "", \$0)
+            sub(/[[:space:]]*$/, "", \$0)
+            print \$0
+            found=1
+            exit
+          }
+          END {
+            if (!found) print "8917"
+          }
         ' "\$CONFIG_PATH"
       }
 
@@ -177,7 +160,7 @@ class CliproxyapiPlus < Formula
         token="\$(openssl rand -hex 16)"
         write_secret_key "\$token"
         umask 077
-        printf '%s\\n' "\$token" > "\$TOKEN_FILE"
+        printf '%s\n' "\$token" > "\$TOKEN_FILE"
         echo "[cliproxyapi-plus] Generated management token and stored it at \$TOKEN_FILE"
       elif [ -f "\$TOKEN_FILE" ]; then
         token="\$(cat "\$TOKEN_FILE")"
