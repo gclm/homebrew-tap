@@ -3,7 +3,7 @@
 
 require "securerandom"
 
-class CliproxyapiPlus < Formula
+class CliProxyApiPlus < Formula
   desc "OpenAI-compatible proxy with third-party provider support"
   homepage "https://github.com/router-for-me/CLIProxyAPIPlus"
   version "6.8.49-0"
@@ -70,10 +70,10 @@ class CliproxyapiPlus < Formula
 
     output << ""
     output << "Start the service:"
-    output << "  brew services start gclm/tap/cliproxyapi-plus"
+    output << "  brew services start gclm/tap/cli-proxy-api-plus"
     output << ""
     output << "If you update the config manually, restart the service:"
-    output << "  brew services restart gclm/tap/cliproxyapi-plus"
+    output << "  brew services restart gclm/tap/cli-proxy-api-plus"
 
     output.join("\n")
   end

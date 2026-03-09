@@ -1,4 +1,4 @@
-name: Update CLIProxyAPIPlus Formula
+name: Update CLI Proxy API Plus Formula
 
 on:
   workflow_dispatch:
@@ -19,9 +19,9 @@ jobs:
       - name: Refresh formula
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: bash ./scripts/update-cliproxyapi-plus.sh
+        run: bash ./scripts/update-cli-proxy-api-plus.sh
       - name: Brew audit
-        run: brew audit --strict gclm/tap/cliproxyapi-plus
+        run: brew audit --strict gclm/tap/cli-proxy-api-plus
       - name: Commit changes
         run: |
           if git diff --quiet; then
@@ -30,6 +30,6 @@ jobs:
           fi
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add Formula/cliproxyapi-plus.rb
-          git commit -m "chore: update cliproxyapi-plus formula"
+          git add Formula/cli-proxy-api-plus.rb
+          git commit -m "chore: update cli-proxy-api-plus formula"
           git push

@@ -19,7 +19,7 @@ brew install gclm/tap/<formula>
 
 ## Included Formulae
 
-### `cliproxyapi-plus`
+### `cli-proxy-api-plus`
 
 Installs `CLIProxyAPIPlus` with a local-first default configuration for management on:
 
@@ -28,13 +28,13 @@ Installs `CLIProxyAPIPlus` with a local-first default configuration for manageme
 Install:
 
 ```bash
-brew install gclm/tap/cliproxyapi-plus
+brew install gclm/tap/cli-proxy-api-plus
 ```
 
 Start as a background service:
 
 ```bash
-brew services start gclm/tap/cliproxyapi-plus
+brew services start gclm/tap/cli-proxy-api-plus
 ```
 
 Generated files after install:
@@ -48,14 +48,14 @@ The formula generates a management token on first install and shows it in `brew`
 
 This tap tracks upstream releases where needed, but keeps formula-specific bootstrap logic local to this repository.
 
-For `cliproxyapi-plus`:
+For `cli-proxy-api-plus`:
 
 - upstream binary version and checksums come from `router-for-me/CLIProxyAPIPlus` releases
 - local config bootstrap, caveats, and service behavior are maintained in this repository
 
 ## Automation
 
-`.github/workflows/update-cliproxyapi-plus.yml` checks for upstream updates and only commits when the formula file actually changes.
+`.github/workflows/update-cli-proxy-api-plus.yml` checks for upstream updates and only commits when the formula file actually changes.
 
 ## Conventions
 

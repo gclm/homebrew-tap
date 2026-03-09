@@ -2,7 +2,7 @@
 set -euo pipefail
 
 repo_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
-formula="$repo_root/Formula/cliproxyapi-plus.rb"
+formula="$repo_root/Formula/cli-proxy-api-plus.rb"
 release_json="$(gh api repos/router-for-me/CLIProxyAPIPlus/releases/latest)"
 tag="$(jq -r '.tag_name' <<<"$release_json")"
 version="${tag#v}"
