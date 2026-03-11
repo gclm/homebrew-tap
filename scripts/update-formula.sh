@@ -81,15 +81,16 @@ replacements = [
     (r'(sha256 "[0-9a-f]{64}")(\n\s+end\n\s+end)', rf'sha256 "{intel_sha}"\2'),
 ]
 
-matched = 0
+# version replacement is optional (some formulas derive version from URL)
+required = replacements[1:]
+
+for pat, _repl in required:
+    if not re.search(pat, content):
+        sys.exit(f'Formula update pattern mismatch: required pattern not found: {pat}')
+
 updated = content
 for pat, repl in replacements:
-    if re.search(pat, updated):
-        matched += 1
-        updated = re.sub(pat, repl, updated, count=1)
-
-if matched != len(replacements):
-    sys.exit(f'Formula update pattern mismatch (matched {matched}/{len(replacements)})')
+    updated = re.sub(pat, repl, updated, count=1)
 
 if updated == content:
     print('no')

@@ -4,8 +4,7 @@
 class Codex < Formula
   desc "Rust-first coding agent with multi-agent support and Anthropic API"
   homepage "https://github.com/stellarlinkco/codex"
-  version "1.2.6"
-  license "AGPL-3.0"
+  license "AGPL-3.0-only"
 
   on_macos do
     if Hardware::CPU.arm?
