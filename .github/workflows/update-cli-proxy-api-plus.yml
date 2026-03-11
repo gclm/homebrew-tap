@@ -32,4 +32,4 @@ jobs:
           git config user.email github-actions@github.com
           git add Formula/cli-proxy-api-plus.rb
           git commit -m "chore: update cli-proxy-api-plus formula"
-          git push
+          git push --set-upstream origin main
