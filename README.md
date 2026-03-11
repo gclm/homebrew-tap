@@ -1,64 +1,54 @@
 # gclm/homebrew-tap
 
-Personal Homebrew tap for packages maintained or curated by `gclm`.
+Personal Homebrew tap maintained by `gclm`.
 
-This repository is intended to host multiple custom formulae over time.
-Formulae should live under `Formula/`.
-
-## Tap Usage
+## Setup
 
 ```bash
 brew tap gclm/tap
 ```
 
-Install a formula from this tap:
-
-```bash
-brew install gclm/tap/<formula>
-```
-
-## Included Formulae
+## Formulae
 
 ### `cli-proxy-api-plus`
 
-Installs `CLIProxyAPIPlus` with a local-first default configuration for management on:
-
-- `http://127.0.0.1:8917/management.html`
-
-Install:
+OpenAI-compatible proxy with third-party provider support.
 
 ```bash
 brew install gclm/tap/cli-proxy-api-plus
-```
-
-Start as a background service:
-
-```bash
 brew services start gclm/tap/cli-proxy-api-plus
 ```
 
-Generated files after install:
+Management UI: `http://127.0.0.1:8917/management.html`
 
+Generated files:
 - Config: `$(brew --prefix)/etc/cliproxyapi-plus/config.yaml`
-- Install metadata: `$(brew --prefix)/var/lib/cliproxyapi-plus/install-info`
+- Metadata: `$(brew --prefix)/var/lib/cliproxyapi-plus/install-info`
 
-The formula generates a management token on first install and shows it in `brew` caveats.
+Upstream: [router-for-me/CLIProxyAPIPlus](https://github.com/router-for-me/CLIProxyAPIPlus)
 
-## Maintenance
+---
 
-This tap tracks upstream releases where needed, but keeps formula-specific bootstrap logic local to this repository.
+### `codex`
 
-For `cli-proxy-api-plus`:
+Rust-first coding agent with multi-agent support and Anthropic API.
 
-- upstream binary version and checksums come from `router-for-me/CLIProxyAPIPlus` releases
-- local config bootstrap, caveats, and service behavior are maintained in this repository
+```bash
+brew install gclm/tap/codex
+```
 
-## Automation
+Upstream: [stellarlinkco/codex](https://github.com/stellarlinkco/codex)
 
-`.github/workflows/update-cli-proxy-api-plus.yml` checks for upstream updates and only commits when the formula file actually changes.
+## Updating
 
-## Conventions
+Formulas are auto-updated every 6 hours via CI. To update locally:
 
-- Put reusable formula logic in the formula itself unless it becomes shared across multiple packages
-- Keep automation scripts minimal and targeted
-- Avoid regenerating whole formula files when only a few upstream fields change
+```bash
+bash scripts/upgrade-local.sh
+```
+
+To manually trigger CI:
+
+```bash
+gh workflow run update-formulas.yml
+```
