@@ -1,0 +1,39 @@
+name: Update Codex Formula
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "47 */6 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: true
+      - uses: Homebrew/actions/setup-homebrew@master
+      - name: Install tools
+        run: brew list jq >/dev/null 2>&1 || brew install jq
+      - name: Refresh formula
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash ./scripts/update-codex.sh
+      - name: Brew audit
+        run: brew audit --strict gclm/tap/codex
+      - name: Commit changes
+        run: |
+          if git diff --quiet; then
+            echo "No changes"
+            exit 0
+          fi
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add Formula/codex.rb
+          git commit -m "chore: update codex formula"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          git push --set-upstream origin main
