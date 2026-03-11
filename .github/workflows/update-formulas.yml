@@ -1,4 +1,4 @@
-name: Update CLI Proxy API Plus Formula
+name: Update Formulas
 
 on:
   workflow_dispatch:
@@ -19,12 +19,28 @@ jobs:
       - uses: Homebrew/actions/setup-homebrew@master
       - name: Install tools
         run: brew list jq >/dev/null 2>&1 || brew install jq
-      - name: Refresh formula
+      - name: Update cli-proxy-api-plus
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: bash ./scripts/update-cli-proxy-api-plus.sh
+        run: |
+          bash ./scripts/update-formula.sh \
+            --repo router-for-me/CLIProxyAPIPlus \
+            --formula Formula/cli-proxy-api-plus.rb \
+            --arm-asset 'CLIProxyAPIPlus_{version}_darwin_arm64.tar.gz' \
+            --intel-asset 'CLIProxyAPIPlus_{version}_darwin_amd64.tar.gz'
+      - name: Update codex
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          bash ./scripts/update-formula.sh \
+            --repo stellarlinkco/codex \
+            --formula Formula/codex.rb \
+            --arm-asset codex-aarch64-apple-darwin.tar.gz \
+            --intel-asset codex-x86_64-apple-darwin.tar.gz
       - name: Brew audit
-        run: brew audit --strict gclm/tap/cli-proxy-api-plus
+        run: |
+          brew audit --strict gclm/tap/cli-proxy-api-plus
+          brew audit --strict gclm/tap/codex
       - name: Commit changes
         run: |
           if git diff --quiet; then
@@ -33,7 +49,7 @@ jobs:
           fi
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add Formula/cli-proxy-api-plus.rb
-          git commit -m "chore: update cli-proxy-api-plus formula"
+          git add Formula/
+          git commit -m "chore: update formulas"
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
           git push --set-upstream origin main
