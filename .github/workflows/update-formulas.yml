@@ -40,7 +40,7 @@ jobs:
       - name: Brew audit
         run: |
           brew audit --strict gclm/tap/cli-proxy-api-plus
-          brew audit --strict --except=audit_version gclm/tap/codex
+          brew audit --strict --except=version gclm/tap/codex
       - name: Commit changes
         run: |
           if git diff --quiet; then
