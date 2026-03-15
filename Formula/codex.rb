@@ -4,7 +4,7 @@
 class Codex < Formula
   desc "Rust-first coding agent with multi-agent support and Anthropic API"
   homepage "https://github.com/stellarlinkco/codex"
-  version "1.2.6"
+  version "1.3.0"
   license "AGPL-3.0-only"
 
   livecheck do
@@ -14,11 +14,11 @@ class Codex < Formula
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/stellarlinkco/codex/releases/download/v1.2.6/codex-aarch64-apple-darwin.tar.gz"
-      sha256 "18efd5721820844c300c6783759bc11144277a03a1eea769db7606ef6f490673"
+      url "https://github.com/stellarlinkco/codex/releases/download/v1.3.0/codex-aarch64-apple-darwin.tar.gz"
+      sha256 "bd2a356a147ed0e2057998b3bae605888f1451fde1e529b7d337a673548c0ee2"
     else
-      url "https://github.com/stellarlinkco/codex/releases/download/v1.2.6/codex-x86_64-apple-darwin.tar.gz"
-      sha256 "7d7aec5d7812d442fccc67fd5280fd109c92467dbc83aa4c59b7ea88601b06a0"
+      url "https://github.com/stellarlinkco/codex/releases/download/v1.3.0/codex-x86_64-apple-darwin.tar.gz"
+      sha256 "8c2abdd00dd2b32c8b2f1b3836f695d272deb3e51a4da45f01ecc0acb3495bd4"
     end
   end
 
