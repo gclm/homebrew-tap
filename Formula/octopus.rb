@@ -15,10 +15,10 @@ class Octopus < Formula
   on_macos do
     if Hardware::CPU.arm?
       url "https://github.com/gclm/octopus/releases/download/v0.9.26/octopus-darwin-arm64.zip"
-      sha256 "PLACEHOLDER_ARM64_SHA256"
+      sha256 "e3b340c7488e6093b7cc14b6fdd1d76c0776cabfb79f23f4d4ef5b4fe16d51b8"
     else
       url "https://github.com/gclm/octopus/releases/download/v0.9.26/octopus-darwin-x86_64.zip"
-      sha256 "PLACEHOLDER_X64_SHA256"
+      sha256 "b23c7b1dd5ee7f4e63c7737ed701fd7c143af766bfa4956528d3abef323b02d2"
     end
   end
 
