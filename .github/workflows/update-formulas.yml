@@ -37,10 +37,20 @@ jobs:
             --formula Formula/codex.rb \
             --arm-asset codex-aarch64-apple-darwin.tar.gz \
             --intel-asset codex-x86_64-apple-darwin.tar.gz
+      - name: Update octopus
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          bash ./scripts/update-formula.sh \
+            --repo gclm/octopus \
+            --formula Formula/octopus.rb \
+            --arm-asset octopus-darwin-arm64.zip \
+            --intel-asset octopus-darwin-x86_64.zip
       - name: Brew audit
         run: |
           brew audit --strict gclm/tap/cli-proxy-api-plus
           brew audit --strict --except=version gclm/tap/codex
+          brew audit --strict gclm/tap/octopus
       - name: Commit changes
         run: |
           if git diff --quiet; then
