@@ -48,7 +48,7 @@ class Octopus < Formula
   end
 
   service do
-    run [opt_bin/"octopus", "start", "-c", etc/"octopus/config.json"]
+    run [opt_bin/"octopus", "start", "--config", etc/"octopus/config.json"]
     keep_alive true
     working_dir var/"lib/octopus"
     log_path var/"log/octopus/output.log"
