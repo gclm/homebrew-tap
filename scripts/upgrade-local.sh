@@ -23,7 +23,7 @@ echo "==> Updating tap..."
 sync_local_tap
 brew update
 
-formulas=(cli-proxy-api-plus codex)
+formulas=(cli-proxy-api-plus codex octopus)
 
 for formula in "${formulas[@]}"; do
   if brew list --formula "gclm/tap/$formula" &>/dev/null; then
