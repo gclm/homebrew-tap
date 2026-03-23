@@ -27,7 +27,7 @@ formulas=(cli-proxy-api-plus codex octopus)
 
 for formula in "${formulas[@]}"; do
   if brew list --formula "gclm/tap/$formula" &>/dev/null; then
-    if brew outdated "gclm/tap/$formula" 2>/dev/null | grep -q .; then
+    if [[ -n "$(brew outdated "gclm/tap/$formula" 2>/dev/null || true)" ]]; then
       echo "==> Upgrading $formula..."
       brew upgrade "gclm/tap/$formula"
       if brew services list | grep -q "^$formula"; then
