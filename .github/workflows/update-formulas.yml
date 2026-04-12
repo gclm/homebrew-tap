@@ -46,11 +46,21 @@ jobs:
             --formula Formula/octopus.rb \
             --arm-asset octopus-darwin-arm64.zip \
             --intel-asset octopus-darwin-x86_64.zip
+      - name: Update securefox
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          bash ./scripts/update-formula.sh \
+            --repo gclm/securefox \
+            --formula Formula/securefox.rb \
+            --arm-asset securefox-macos-arm64.tar.gz \
+            --intel-asset securefox-macos-x64.tar.gz
       - name: Brew audit
         run: |
           brew audit --strict gclm/tap/cli-proxy-api-plus
           brew audit --strict --except=version gclm/tap/codex
           brew audit --strict gclm/tap/octopus
+          brew audit --strict --except=version gclm/tap/securefox
       - name: Commit changes
         run: |
           if git diff --quiet; then
