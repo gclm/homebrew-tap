@@ -9,10 +9,10 @@ class Securefox < Formula
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/gclm/securefox/releases/latest/download/securefox-macos-arm64.tar.gz"
+      url "https://github.com/gclm/securefox/releases/download/v0.0.0/securefox-macos-arm64.tar.gz"
       sha256 "0000000000000000000000000000000000000000000000000000000000000000"
     else
-      url "https://github.com/gclm/securefox/releases/latest/download/securefox-macos-x64.tar.gz"
+      url "https://github.com/gclm/securefox/releases/download/v0.0.0/securefox-macos-x64.tar.gz"
       sha256 "0000000000000000000000000000000000000000000000000000000000000000"
     end
   end
