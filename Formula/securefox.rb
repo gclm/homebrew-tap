@@ -22,11 +22,11 @@ class Securefox < Formula
   end
 
   service do
-    run [opt_bin/"securefox", "--vault", ENV["HOME"]/.securefox, "service", "run", "--timeout", "1800"]
+    run [opt_bin/"securefox", "--vault", ENV["HOME"]/".securefox", "service", "run", "--timeout", "1800"]
     keep_alive true
-    working_dir ENV["HOME"]/.securefox
-    log_path ENV["HOME"]/.securefox/service.log
-    error_log_path ENV["HOME"]/.securefox/service.err
+    working_dir ENV["HOME"]/".securefox"
+    log_path ENV["HOME"]/".securefox"/"service.log"
+    error_log_path ENV["HOME"]/".securefox"/"service.err"
   end
 
   test do

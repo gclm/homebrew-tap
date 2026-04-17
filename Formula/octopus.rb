@@ -37,7 +37,10 @@ class Octopus < Formula
     unless config_path.exist?
       config_path.write <<~JSON
         {
-          "listen": "0.0.0.0:8080",
+          "server": {
+            "host": "0.0.0.0",
+            "port": 8080
+          },
           "database": {
             "type": "sqlite",
             "path": "#{var}/lib/octopus/octopus.db"
