@@ -27,7 +27,22 @@ done
 
 [[ -z "${repo:-}" || -z "${formula:-}" || -z "${arm_pattern:-}" || -z "${intel_pattern:-}" ]] && usage
 
-release_json="$(gh api "repos/${repo}/releases/latest")"
+notify_feishu() {
+  local title="$1" message="$2"
+  [[ -z "${FEISHU_WEBHOOK_URL:-}" ]] && return 0
+  curl -sf -X POST "$FEISHU_WEBHOOK_URL" \
+    -H 'Content-Type: application/json' \
+    -d "$(jq -n --arg t "$title" --arg m "$message" \
+      '{msg_type: "interactive", card: {header: {title: {tag: "plain_text", content: $t}}, elements: [{tag: "markdown", content: $m}]}}')" \
+    >/dev/null 2>&1 || true
+}
+
+release_json="$(gh api "repos/${repo}/releases/latest" 2>&1)" || {
+  echo "::warning::Failed to fetch releases for ${repo}: ${release_json}"
+  echo "- :warning: **${repo}** — 仓库不可用或无 release，已跳过" >> "${GITHUB_STEP_SUMMARY:-/dev/null}"
+  notify_feishu "Homebrew Tap 更新告警" "⚠️ **${repo}** 仓库不可用或无 release，已跳过更新。"
+  exit 0
+}
 tag="$(jq -r '.tag_name' <<<"$release_json")"
 version="${tag#v}"
 
@@ -40,8 +55,10 @@ arm_sha="$(jq -r --arg name "$arm_asset" '.assets[] | select(.name == $name) | .
 intel_sha="$(jq -r --arg name "$intel_asset" '.assets[] | select(.name == $name) | .digest' <<<"$release_json" | sed 's/^sha256://')"
 
 if [[ -z "$arm_sha" || -z "$intel_sha" ]]; then
-  echo "Failed to resolve release assets for tag $tag (arm: $arm_asset, intel: $intel_asset)" >&2
-  exit 1
+  echo "::warning::Failed to resolve release assets for ${repo} tag ${tag} (arm: ${arm_asset}, intel: ${intel_asset})"
+  echo "- :warning: **${repo}** — release ${tag} 中未找到所需 asset，已跳过" >> "${GITHUB_STEP_SUMMARY:-/dev/null}"
+  notify_feishu "Homebrew Tap 更新告警" "⚠️ **${repo}** release \`${tag}\` 中未找到所需 asset (arm: \`${arm_asset}\`, intel: \`${intel_asset}\`)，已跳过。"
+  exit 0
 fi
 
 export FORMULA_PATH="$formula"

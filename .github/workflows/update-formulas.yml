@@ -11,26 +11,25 @@ permissions:
 jobs:
   update:
     runs-on: macos-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
     steps:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           persist-credentials: true
-      - uses: Homebrew/actions/setup-homebrew@master
+      - uses: Homebrew/actions/setup-homebrew@main
       - name: Install tools
         run: brew list jq >/dev/null 2>&1 || brew install jq
-      - name: Update cli-proxy-api-plus
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Update cli-proxy-api
         run: |
           bash ./scripts/update-formula.sh \
-            --repo router-for-me/CLIProxyAPIPlus \
-            --formula Formula/cli-proxy-api-plus.rb \
-            --arm-asset 'CLIProxyAPIPlus_{version}_darwin_arm64.tar.gz' \
-            --intel-asset 'CLIProxyAPIPlus_{version}_darwin_amd64.tar.gz'
+            --repo router-for-me/CLIProxyAPI \
+            --formula Formula/cli-proxy-api.rb \
+            --arm-asset 'CLIProxyAPI_{version}_darwin_arm64.tar.gz' \
+            --intel-asset 'CLIProxyAPI_{version}_darwin_amd64.tar.gz'
       - name: Update codex
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           bash ./scripts/update-formula.sh \
             --repo stellarlinkco/codex \
@@ -38,8 +37,6 @@ jobs:
             --arm-asset codex-aarch64-apple-darwin.tar.gz \
             --intel-asset codex-x86_64-apple-darwin.tar.gz
       - name: Update octopus
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           bash ./scripts/update-formula.sh \
             --repo gclm/octopus \
@@ -47,8 +44,6 @@ jobs:
             --arm-asset octopus-darwin-arm64.zip \
             --intel-asset octopus-darwin-x86_64.zip
       - name: Update securefox
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           bash ./scripts/update-formula.sh \
             --repo gclm/securefox \
@@ -57,7 +52,7 @@ jobs:
             --intel-asset securefox-macos-x64.tar.gz
       - name: Brew audit
         run: |
-          brew audit --strict gclm/tap/cli-proxy-api-plus
+          brew audit --strict gclm/tap/cli-proxy-api
           brew audit --strict --except=version gclm/tap/codex
           brew audit --strict gclm/tap/octopus
           brew audit --strict --except=version gclm/tap/securefox
