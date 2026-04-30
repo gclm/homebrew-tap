@@ -41,7 +41,6 @@ upgrade_formula() {
   fi
 
   if [[ -z "$(brew outdated "$full_name" 2>/dev/null || true)" ]]; then
-    echo "  $formula — 已是最新"
     return
   fi
 
@@ -53,18 +52,15 @@ upgrade_formula() {
   fi
 }
 
-# 检查 formula 状态
-formula_status() {
-  local formula="$1"
-  local full_name="gclm/tap/$formula"
+# 获取本地安装版本
+installed_version() {
+  local full_name="gclm/tap/$1"
+  brew list --formula "$full_name" 2>/dev/null | head -1 | awk '{print $NF}' | sed 's/.*\///'
+}
 
-  if ! brew list --formula "$full_name" &>/dev/null; then
-    echo "未安装"
-  elif [[ -n "$(brew outdated "$full_name" 2>/dev/null || true)" ]]; then
-    echo "可升级"
-  else
-    echo "最新"
-  fi
+# 获取 formula 文件中的最新版本
+latest_version() {
+  grep -m1 '^  version' "$formula_dir/$1.rb" 2>/dev/null | sed 's/.*"\(.*\)"/v\1/'
 }
 
 echo "==> Updating tap..."
@@ -89,18 +85,39 @@ fi
 
 # 交互模式
 echo ""
-echo "可用 formula："
+upgradable=()
+for formula in "${formulas[@]}"; do
+  local_ver="$(installed_version "$formula")"
+  latest_ver="$(latest_version "$formula")"
+  full_name="gclm/tap/$formula"
+
+  if ! brew list --formula "$full_name" &>/dev/null; then
+    printf "  %-20s 未安装\n" "$formula"
+  elif [[ -z "$(brew outdated "$full_name" 2>/dev/null || true)" ]]; then
+    printf "  %-20s (暂无更新)\n" "$formula"
+  else
+    printf "  %-20s (v%s -> %s)\n" "$formula" "${local_ver:-?}" "$latest_ver"
+    upgradable+=("$formula")
+  fi
+done
+
+if [[ ${#upgradable[@]} -eq 0 ]]; then
+  echo ""
+  echo "所有 formula 均为最新版本"
+  exit 0
+fi
+
 echo ""
-PS3=$'\n请选择要升级的 formula（多选用空格分隔，a=全部，q=退出）：'
-select formula in "${formulas[@]}" "[升级全部]" "[退出]"; do
+PS3=$'\n请选择要升级的 formula（a=全部，q=退出）：'
+select formula in "${upgradable[@]}" "[升级全部]" "[退出]"; do
   case "$REPLY" in
-    q|[Q]|$(( ${#formulas[@]} + 2 )) )
+    q|[Q]|$(( ${#upgradable[@]} + 2 )) )
       echo "退出"
       exit 0
       ;;
-    a|A|$(( ${#formulas[@]} + 1 )) )
+    a|A|$(( ${#upgradable[@]} + 1 )) )
       echo ""
-      for f in "${formulas[@]}"; do
+      for f in "${upgradable[@]}"; do
         upgrade_formula "$f"
       done
       echo "==> Done"
@@ -110,9 +127,9 @@ select formula in "${formulas[@]}" "[升级全部]" "[退出]"; do
       echo "无效选择"
       ;;
     *)
-      if [[ "$REPLY" -ge 1 && "$REPLY" -le "${#formulas[@]}" ]]; then
+      if [[ "$REPLY" -ge 1 && "$REPLY" -le "${#upgradable[@]}" ]]; then
         echo ""
-        upgrade_formula "${formulas[$((REPLY-1))]}"
+        upgrade_formula "${upgradable[$((REPLY-1))]}"
         echo "==> Done"
         exit 0
       else
