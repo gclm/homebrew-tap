@@ -55,7 +55,10 @@ upgrade_formula() {
 # 获取本地安装版本
 installed_version() {
   local full_name="gclm/tap/$1"
-  brew list --formula "$full_name" 2>/dev/null | head -1 | awk '{print $NF}' | sed 's/.*\///'
+  local output
+  output="$(brew list --formula "$full_name" 2>/dev/null || true)"
+  [[ -z "$output" ]] && return
+  echo "$output" | head -1 | awk '{print $NF}' | sed 's/.*\///'
 }
 
 # 获取 formula 文件中的最新版本
