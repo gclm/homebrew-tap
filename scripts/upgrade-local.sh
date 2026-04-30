@@ -71,7 +71,7 @@ echo "==> Updating tap..."
 sync_local_tap
 brew update
 
-mapfile -t formulas < <(scan_formulas)
+IFS=$'\n' read -r -d '' -a formulas < <(scan_formulas && printf '\0')
 
 if [[ ${#formulas[@]} -eq 0 ]]; then
   echo "未找到任何 formula"
