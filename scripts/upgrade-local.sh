@@ -35,16 +35,21 @@ upgrade_formula() {
   local formula="$1"
   local full_name="gclm/tap/$formula"
 
-  if ! brew list --formula "$full_name" &>/dev/null; then
+  local versions
+  versions="$(formula_versions "$formula")"
+  if [[ -z "$versions" ]]; then
     echo "  $formula — 未安装，跳过"
     return
   fi
 
-  if [[ -z "$(brew outdated "$full_name" 2>/dev/null || true)" ]]; then
+  local local_ver="${versions%% *}"
+  local latest_ver="${versions##* }"
+  if [[ "$local_ver" == "$latest_ver" ]]; then
+    echo "  $formula — 已是最新"
     return
   fi
 
-  echo "  升级 $formula..."
+  echo "  升级 $formula (v$local_ver -> v$latest_ver)..."
   brew upgrade "$full_name"
   if brew services list 2>/dev/null | grep -q "^$formula"; then
     echo "  重启 $formula 服务..."
@@ -52,18 +57,21 @@ upgrade_formula() {
   fi
 }
 
-# 获取本地安装版本
-installed_version() {
+# 通过 brew info JSON 获取版本信息
+# 输出: "installed_version latest_version" 或为空（未安装）
+formula_versions() {
   local full_name="gclm/tap/$1"
-  local output
-  output="$(brew list --formula "$full_name" 2>/dev/null || true)"
-  [[ -z "$output" ]] && return
-  echo "$output" | head -1 | awk '{print $NF}' | sed 's/.*\///'
-}
-
-# 获取 formula 文件中的最新版本
-latest_version() {
-  grep -m1 '^  version' "$formula_dir/$1.rb" 2>/dev/null | sed 's/.*"\(.*\)"/v\1/'
+  local json
+  json="$(brew info --json=v2 "$full_name" 2>/dev/null || true)"
+  [[ -z "$json" ]] && return
+  local installed latest
+  installed="$(echo "$json" | jq -r '.formulae[0].installed[0].version // empty' 2>/dev/null || true)"
+  latest="$(echo "$json" | jq -r '.formulae[0].versions.stable // empty' 2>/dev/null || true)"
+  [[ -z "$installed" || -z "$latest" ]] && return
+  # 统一去掉版本前缀用于比较
+  installed="${installed#[vV]}"
+  latest="${latest#[vV]}"
+  echo "$installed $latest"
 }
 
 echo "==> Updating tap..."
@@ -93,17 +101,20 @@ fi
 echo ""
 upgradable=()
 for formula in "${formulas[@]}"; do
-  local_ver="$(installed_version "$formula")"
-  latest_ver="$(latest_version "$formula")"
   full_name="gclm/tap/$formula"
+  versions="$(formula_versions "$formula")"
 
-  if ! brew list --formula "$full_name" &>/dev/null; then
+  if [[ -z "$versions" ]]; then
     printf "  %-20s 未安装\n" "$formula"
-  elif [[ -z "$(brew outdated "$full_name" 2>/dev/null || true)" ]]; then
-    printf "  %-20s (暂无更新)\n" "$formula"
   else
-    printf "  %-20s (v%s -> %s)\n" "$formula" "${local_ver:-?}" "$latest_ver"
-    upgradable+=("$formula")
+    local_ver="${versions%% *}"
+    latest_ver="${versions##* }"
+    if [[ "$local_ver" == "$latest_ver" ]]; then
+      printf "  %-20s (暂无更新)\n" "$formula"
+    else
+      printf "  %-20s (v%s -> v%s)\n" "$formula" "$local_ver" "$latest_ver"
+      upgradable+=("$formula")
+    fi
   fi
 done
 
