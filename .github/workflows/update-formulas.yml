@@ -29,13 +29,6 @@ jobs:
             --formula Formula/cli-proxy-api.rb \
             --arm-asset 'CLIProxyAPI_{version}_darwin_arm64.tar.gz' \
             --intel-asset 'CLIProxyAPI_{version}_darwin_amd64.tar.gz'
-      - name: Update codex
-        run: |
-          bash ./scripts/update-formula.sh \
-            --repo stellarlinkco/codex \
-            --formula Formula/codex.rb \
-            --arm-asset codex-aarch64-apple-darwin.tar.gz \
-            --intel-asset codex-x86_64-apple-darwin.tar.gz
       - name: Update octopus
         run: |
           bash ./scripts/update-formula.sh \
@@ -53,7 +46,6 @@ jobs:
       - name: Brew audit
         run: |
           brew audit --strict gclm/tap/cli-proxy-api
-          brew audit --strict --except=version gclm/tap/codex
           brew audit --strict gclm/tap/octopus
           brew audit --strict --except=version gclm/tap/securefox
       - name: Commit changes
@@ -67,4 +59,5 @@ jobs:
           git add Formula/
           git commit -m "chore: update formulas"
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          git pull --rebase origin main
           git push --set-upstream origin main

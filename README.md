@@ -10,34 +10,42 @@ brew tap gclm/tap
 
 ## Formulae
 
-### `cli-proxy-api-plus`
+### `cli-proxy-api`
 
 OpenAI-compatible proxy with third-party provider support.
 
 ```bash
-brew install gclm/tap/cli-proxy-api-plus
-brew services start gclm/tap/cli-proxy-api-plus
+brew install gclm/tap/cli-proxy-api
+brew services start gclm/tap/cli-proxy-api
 ```
 
 Management UI: `http://127.0.0.1:8917/management.html`
 
 Generated files:
-- Config: `$(brew --prefix)/etc/cliproxyapi-plus/config.yaml`
-- Metadata: `$(brew --prefix)/var/lib/cliproxyapi-plus/install-info`
+- Config: `$(brew --prefix)/etc/cli-proxy-api/config.yaml`
+- Metadata: `$(brew --prefix)/var/lib/cli-proxy-api/install-info`
 
-Upstream: [router-for-me/CLIProxyAPIPlus](https://github.com/router-for-me/CLIProxyAPIPlus)
+Upstream: [router-for-me/CLIProxyAPI](https://github.com/router-for-me/CLIProxyAPI)
 
 ---
 
-### `codex`
-
-Rust-first coding agent with multi-agent support and Anthropic API.
+### `octopus`
 
 ```bash
-brew install gclm/tap/codex
+brew install gclm/tap/octopus
 ```
 
-Upstream: [stellarlinkco/codex](https://github.com/stellarlinkco/codex)
+Upstream: [gclm/octopus](https://github.com/gclm/octopus)
+
+---
+
+### `securefox`
+
+```bash
+brew install gclm/tap/securefox
+```
+
+Upstream: [gclm/securefox](https://github.com/gclm/securefox)
 
 ## Updating
 
