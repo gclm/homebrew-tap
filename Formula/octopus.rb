@@ -4,7 +4,7 @@
 class Octopus < Formula
   desc "Simple, beautiful, and elegant LLM API aggregation & load balancing service"
   homepage "https://github.com/gclm/octopus"
-  version "1.0.14"
+  version "1.0.15"
   license "AGPL-3.0-only"
 
   livecheck do
@@ -14,11 +14,11 @@ class Octopus < Formula
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/gclm/octopus/releases/download/v1.0.14/octopus-darwin-arm64.zip"
-      sha256 "258cfddedf365cb7650baa4de17ce0c70ece92b9ba2119cea8eb330f30e1568b"
+      url "https://github.com/gclm/octopus/releases/download/v1.0.15/octopus-darwin-arm64.zip"
+      sha256 "8d55a99742ce1942b20a9919ba20616c5639da1db41b57ddd42d6ec4e7a1f7ea"
     else
-      url "https://github.com/gclm/octopus/releases/download/v1.0.14/octopus-darwin-x86_64.zip"
-      sha256 "1f24470d29f21e03bd581a2572d21658c79b1bb738ab867538f5f4e8258d242f"
+      url "https://github.com/gclm/octopus/releases/download/v1.0.15/octopus-darwin-x86_64.zip"
+      sha256 "b1c1846e6659ff865077207171b555df38ce615f91f05e97a83bfd9191786296"
     end
   end
 
