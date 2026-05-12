@@ -27,7 +27,7 @@ jobs:
           bash ./scripts/update-formula.sh \
             --repo router-for-me/CLIProxyAPI \
             --formula Formula/cli-proxy-api.rb \
-            --arm-asset 'CLIProxyAPI_{version}_darwin_arm64.tar.gz' \
+            --arm-asset 'CLIProxyAPI_{version}_darwin_aarch64.tar.gz' \
             --intel-asset 'CLIProxyAPI_{version}_darwin_amd64.tar.gz'
       - name: Update octopus
         run: |
