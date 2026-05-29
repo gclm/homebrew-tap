@@ -43,11 +43,19 @@ jobs:
             --formula Formula/securefox.rb \
             --arm-asset securefox-macos-arm64.tar.gz \
             --intel-asset securefox-macos-x64.tar.gz
+      - name: Update galaxy-router
+        run: |
+          bash ./scripts/update-formula.sh \
+            --repo gclm/galaxy-router \
+            --formula Formula/galaxy-router.rb \
+            --arm-asset galaxy-router-darwin-arm64.zip \
+            --intel-asset galaxy-router-darwin-x86_64.zip
       - name: Brew audit
         run: |
           brew audit --strict gclm/tap/cli-proxy-api
           brew audit --strict gclm/tap/octopus
           brew audit --strict --except=version gclm/tap/securefox
+          brew audit --strict gclm/tap/galaxy-router
       - name: Commit changes
         run: |
           if git diff --quiet; then

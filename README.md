@@ -47,6 +47,21 @@ brew install gclm/tap/securefox
 
 Upstream: [gclm/securefox](https://github.com/gclm/securefox)
 
+---
+
+### `galaxy-router`
+
+AI 协议互转代理网关。
+
+```bash
+brew install gclm/tap/galaxy-router
+brew services start gclm/tap/galaxy-router
+```
+
+管理界面: `http://127.0.0.1:8080`
+
+Upstream: [gclm/galaxy-router](https://github.com/gclm/galaxy-router)
+
 ## Updating
 
 Formulas are auto-updated every 6 hours via CI. To update locally:
