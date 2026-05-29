@@ -38,7 +38,7 @@ class GalaxyRouter < Formula
       config_path.write <<~TOML
         [server]
         host = "127.0.0.1"
-        port = 8080
+        port = 29088
 
         [database]
         path = "#{var}/lib/galaxy-router/galaxy.db"
