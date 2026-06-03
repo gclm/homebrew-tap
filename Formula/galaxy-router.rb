@@ -4,7 +4,7 @@
 class GalaxyRouter < Formula
   desc "AI 协议互转代理网关"
   homepage "https://github.com/gclm/galaxy-router"
-  version "0.0.5"
+  version "0.0.6"
   license "Apache-2.0"
 
   livecheck do
@@ -14,11 +14,11 @@ class GalaxyRouter < Formula
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/gclm/galaxy-router/releases/download/v0.0.5/galaxy-router-darwin-arm64.zip"
-      sha256 "73b5d27ffdefc4a6d2ee67d9e7c5586fe17d64eb141bc6e2b30075529642e6c8"
+      url "https://github.com/gclm/galaxy-router/releases/download/v0.0.6/galaxy-router-darwin-arm64.zip"
+      sha256 "c1d0321d34e211fd63c90c9e644e6623f36e27201905a081599dd5f3b9b6672a"
     else
-      url "https://github.com/gclm/galaxy-router/releases/download/v0.0.5/galaxy-router-darwin-x86_64.zip"
-      sha256 "408492ddb2a8312b8b93f57ae3d5f4e3bda12b30dcf54b9e92da88f326598112"
+      url "https://github.com/gclm/galaxy-router/releases/download/v0.0.6/galaxy-router-darwin-x86_64.zip"
+      sha256 "78ed63ee313160ccf536459f7731bec12c4621556028f4d5a1d90ac318ed8598"
     end
   end
 
