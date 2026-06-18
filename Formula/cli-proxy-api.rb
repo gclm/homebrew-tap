@@ -6,16 +6,16 @@ require "securerandom"
 class CliProxyApi < Formula
   desc "OpenAI-compatible proxy with third-party provider support"
   homepage "https://github.com/router-for-me/CLIProxyAPI"
-  version "7.2.16"
+  version "7.2.18"
   license "MIT"
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/router-for-me/CLIProxyAPI/releases/download/v7.2.16/CLIProxyAPI_7.2.16_darwin_aarch64.tar.gz"
-      sha256 "973bee457feef8aab39a873555bd76dab9307652dd9a59f65c7f4884dc52b060"
+      url "https://github.com/router-for-me/CLIProxyAPI/releases/download/v7.2.18/CLIProxyAPI_7.2.18_darwin_aarch64.tar.gz"
+      sha256 "b2c1051486085cffcc7b69a1f47e78ab902e96fb88c4ba0f5dc7bbd7344a7493"
     else
-      url "https://github.com/router-for-me/CLIProxyAPI/releases/download/v7.2.16/CLIProxyAPI_7.2.16_darwin_amd64.tar.gz"
-      sha256 "7ef7c5f703947a104d631a84338e5dabf1cbd72f49f865d9854028555194005b"
+      url "https://github.com/router-for-me/CLIProxyAPI/releases/download/v7.2.18/CLIProxyAPI_7.2.18_darwin_amd64.tar.gz"
+      sha256 "f90b676db4a16a0ac6075fbe181ce617ce5bc2a1ae8c299f010d70b3889e5375"
     end
   end
 
