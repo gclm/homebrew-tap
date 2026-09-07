@@ -29,13 +29,6 @@ jobs:
             --formula Formula/cli-proxy-api.rb \
             --arm-asset 'CLIProxyAPI_{version}_darwin_aarch64.tar.gz' \
             --intel-asset 'CLIProxyAPI_{version}_darwin_amd64.tar.gz'
-      - name: Update octopus
-        run: |
-          bash ./scripts/update-formula.sh \
-            --repo gclm/octopus \
-            --formula Formula/octopus.rb \
-            --arm-asset octopus-darwin-arm64.zip \
-            --intel-asset octopus-darwin-x86_64.zip
       - name: Update securefox
         run: |
           bash ./scripts/update-formula.sh \
@@ -53,7 +46,6 @@ jobs:
       - name: Brew audit
         run: |
           brew audit --strict gclm/tap/cli-proxy-api
-          brew audit --strict gclm/tap/octopus
           brew audit --strict --except=version gclm/tap/securefox
           brew audit --strict gclm/tap/galaxy-router
       - name: Commit changes
