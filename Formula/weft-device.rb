@@ -25,21 +25,18 @@ class WeftDevice < Formula
     bin.install "weft-device"
   end
 
-  def post_install
-    # TUN 模式需 root；brew services 以 root 跑时 HOMEBREW_PREFIX 下的 var 不可写预期差，
-    # 状态目录与 Linux 布局对齐（/var/lib/weft-device），普通用户手动运行时落 ~/.weft
-    (var/"lib/weft-device").mkpath
-  end
-
-  # 控制台地址经环境变量注入（WEFT_CONSOLE 覆盖默认值）：
-  #   sudo WEFT_CONSOLE=https://weft.gclmit.club brew services start gclm/tap/weft-device
-  def service
-    [opt_bin/"weft-device", "up", "--console", ENV.fetch("WEFT_CONSOLE", "https://weft.gclmit.club")]
+  service do
+    run [opt_bin/"weft-device", "up", "--console", "https://weft.gclmit.club"]
+    run_type :immediate
+    keep_alive true
+    working_dir var/"lib/weft-device"
+    log_path var/"log/weft-device.log"
+    error_log_path var/"log/weft-device.log"
   end
 
   def caveats
     <<~EOS
-      首次使用（需 root 运行以创建 TUN 设备）：
+      首次使用（TUN 需 root 运行）：
 
         sudo brew services start gclm/tap/weft-device
 
@@ -47,7 +44,7 @@ class WeftDevice < Formula
         sudo tail -f $(brew --prefix)/var/log/weft-device.log
 
       查看入网状态：weft-device status
-      升级：brew upgrade weft-device（服务重启式，不走 --auto-upgrade）
+      升级：brew upgrade weft-device（重启服务式，不走 --auto-upgrade）
     EOS
   end
 
