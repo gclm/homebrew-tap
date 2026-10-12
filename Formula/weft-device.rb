@@ -4,7 +4,7 @@
 class WeftDevice < Formula
   desc "Weft 私有化 Mesh VPN 设备端（EasyTier 内核）"
   homepage "https://weft.gclmit.club"
-  version "0.5.0"
+  version "0.5.1"
   license "MIT"
 
   livecheck do
@@ -14,10 +14,10 @@ class WeftDevice < Formula
   on_macos do
     if Hardware::CPU.arm?
       url "https://weft.gclmit.club/downloads/weft-device-darwin-arm64-#{version}.tar.gz"
-      sha256 "c958f4607bc2e39dae1ab787b87c4ef7e09c38a379df327eebfe41977806be8b"
+      sha256 "88bcc67873bd27f137a6d565909e53545071c635c08f61cf6217064074bf897c"
     else
       url "https://weft.gclmit.club/downloads/weft-device-darwin-amd64-#{version}.tar.gz"
-      sha256 "863a5d0d0a3d2f9da6bb89ec227ba9be699c80bdfd646f05f1418d927cf8b767"
+      sha256 "c826d1bdab4e73759c4e8ae2d9bcc1d98f6d07958823e8e6ce4ae9aa91b470a8"
     end
   end
 
